@@ -1,2 +1,11 @@
 .build/
 *.vcd
+# Quartus and ModelSim generated output
+/db/
+/incremental_db/
+/output_files/
+*.qws
+/ModelSim/work/
+/ModelSim/MIF/
+/ModelSim/transcript
+/ModelSim/vsim.wlf

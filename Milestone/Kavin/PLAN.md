@@ -1,8 +1,14 @@
-# Kavin milestone starter
+# Kavin milestone starter - course VGA integration
 
-Scope: milestone 1 from the revised proposal: basic VGA note display and initial game-state controller. All files use Verilog-2001 and a 50 MHz input clock. Keyboard decoding, tone generation, sequence storage and scoring belong to later integration.
+Milestone 1: basic note display and initial game controller. The official
+ECE241 VGA adapter replaces the initial custom timing implementation.
 
-1. Test the controller's reset, empty-recording guard, record/replay/match/result transitions, restart and enables; implement game_fsm.v.
-2. Test 640x480 timing, sync widths, blanking and frame wrap; implement vga_timing.v with a 25 MHz pixel output and clock enable.
-3. Test key highlighting, idle display and blanking; implement note_display.v and integrate all modules in kavin_milestone1.v.
-4. Run the complete simulation suite and compile the top. Document the synchronous integration contract and remaining board checks.
+- [x] Download course VGA adapter and DE1-SoC examples from Quercus.
+- [x] Preserve supplied adapter files unchanged and record source checksums.
+- [x] Drive the supplied pixel-write interface with a tested 160x120 scene writer.
+- [x] Keep the tested initial phase controller and eight-note display.
+- [x] Add a switch-controlled board bring-up top and course pin assignments.
+- [x] Test framebuffer writes and VGA output using the actual course adapter/
+  controller plus explicitly scoped Icarus RAM/PLL models.
+- [ ] Run Quartus timing/synthesis, ModelSim with Intel libraries, and board checks on ECF.
+- [ ] Integrate Saajan's keyboard/audio path for the playable-keyboard milestone.

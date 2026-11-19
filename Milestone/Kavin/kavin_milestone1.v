@@ -24,7 +24,10 @@ module kavin_milestone1 (
     output wire VGA_BLANK_N,
     output wire VGA_SYNC_N
 );
-    wire [9:0] x, y;
+    wire [7:0] x;
+    wire [6:0] y;
+    wire [8:0] color;
+    wire write;
     game_fsm controller (
         .clk(CLOCK_50), .reset(reset), .start(start),
         .finish_record(finish_record), .sequence_nonempty(sequence_nonempty),
@@ -32,14 +35,20 @@ module kavin_milestone1 (
         .record_enable(record_enable), .replay_enable(replay_enable),
         .match_enable(match_enable)
     );
-    vga_timing timing (
-        .clk(CLOCK_50), .reset(reset), .pixel_clk(VGA_CLK), .x(x), .y(y),
-        .active_video(VGA_BLANK_N), .hsync_n(VGA_HS), .vsync_n(VGA_VS)
-    );
-    note_display display (
-        .x(x), .y(y), .active_video(VGA_BLANK_N), .state(game_state),
+    frame_writer painter (
+        .clk(CLOCK_50), .reset(reset), .state(game_state),
         .note_id(note_id), .note_active(note_active),
-        .red(VGA_R), .green(VGA_G), .blue(VGA_B)
+        .x(x), .y(y), .color(color), .write(write)
     );
-    assign VGA_SYNC_N = 1'b0;
+    // Official ECE241 VGA adapter, downloaded from Quercus, unmodified.
+    vga_adapter #(
+        .RESOLUTION("160x120"), .COLOR_DEPTH(9),
+        .BACKGROUND_IMAGE("MIF/black_160_9.mif")
+    ) VGA (
+        .resetn(~reset), .clock(CLOCK_50), .color(color),
+        .x(x), .y(y), .write(write),
+        .VGA_R(VGA_R), .VGA_G(VGA_G), .VGA_B(VGA_B),
+        .VGA_CLK(VGA_CLK), .VGA_HS(VGA_HS), .VGA_VS(VGA_VS),
+        .VGA_BLANK_N(VGA_BLANK_N), .VGA_SYNC_N(VGA_SYNC_N)
+    );
 endmodule
