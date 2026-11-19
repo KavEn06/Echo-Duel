@@ -1,4 +1,4 @@
-# Run from Milestone/Kavin/ModelSim with the ECF Intel simulation libraries mapped.
+# Run from Milestone 1/Kavin/ModelSim with the ECF Intel simulation libraries mapped.
 quit -sim
 vlib work
 vlog ../game_fsm.v ../frame_writer.v ../kavin_milestone1.v ../vga_adapter/*.v tb_waveform.v
