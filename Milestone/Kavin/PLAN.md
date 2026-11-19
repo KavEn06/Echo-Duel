@@ -12,3 +12,8 @@ ECE241 VGA adapter replaces the initial custom timing implementation.
   controller plus explicitly scoped Icarus RAM/PLL models.
 - [ ] Run Quartus timing/synthesis, ModelSim with Intel libraries, and board checks on ECF.
 - [ ] Integrate Saajan's keyboard/audio path for the playable-keyboard milestone.
+
+Readability revision: combined rendering and pixel walking in `frame_writer.v`,
+using native 160x120 coordinates and named nine-bit colours. Removed the separate
+renderer file and combined its key/border checks into the writer testbench.
+The game FSM now uses one clocked case statement with the same transitions.

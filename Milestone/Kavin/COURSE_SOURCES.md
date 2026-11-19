@@ -11,7 +11,7 @@ https://q.utoronto.ca/courses/468637/pages/vga-adapter
 - The adapter instantiation follows the supplied COLORS example's
   `color`, `x`, `y`, `write`, `clock`, `resetn` interface.
 
-The note renderer, framebuffer writer, game controller and board wrapper are
+The combined scene/framebuffer writer, game controller and board wrapper are
 project-specific starter code prepared with AI assistance. The course adapter
 is supplied code; do not count it as your own implementation. Be prepared to
 explain and adapt the project-specific logic for the milestone demonstration.

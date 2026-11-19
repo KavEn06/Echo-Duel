@@ -1,12 +1,12 @@
 IVERILOG ?= iverilog
 VVP ?= vvp
 BUILD := .build
-OWN_RTL := game_fsm.v note_display.v frame_writer.v kavin_milestone1.v kavin_board_demo.v
+OWN_RTL := game_fsm.v frame_writer.v kavin_milestone1.v kavin_board_demo.v
 COURSE_RTL := vga_adapter/vga_adapter.v vga_adapter/vga_address_translator.v vga_adapter/vga_controller.v
 # The real course vga_pll.v needs Intel libraries. Only local Icarus uses these models.
 SIM_IP := tests/sim/vga_pll.v tests/sim/altsyncram.v
 RTL := $(OWN_RTL) $(COURSE_RTL) $(SIM_IP)
-TESTS := game_fsm note_display frame_writer kavin_milestone1
+TESTS := game_fsm frame_writer kavin_milestone1
 # Course sources have no timescale; avoid changing the supplied files to add one.
 FLAGS := -g2001 -Wall -Wno-timescale
 

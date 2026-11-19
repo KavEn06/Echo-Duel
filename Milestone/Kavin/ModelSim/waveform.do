@@ -1,7 +1,7 @@
 # Run from Milestone/Kavin/ModelSim with the ECF Intel simulation libraries mapped.
 quit -sim
 vlib work
-vlog ../game_fsm.v ../note_display.v ../frame_writer.v ../kavin_milestone1.v ../vga_adapter/*.v tb_waveform.v
+vlog ../game_fsm.v ../frame_writer.v ../kavin_milestone1.v ../vga_adapter/*.v tb_waveform.v
 # The adapter MIF path is relative to the simulator's working directory.
 file mkdir MIF
 file copy -force ../MIF/black_160_9.mif MIF/black_160_9.mif

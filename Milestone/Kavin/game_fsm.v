@@ -16,23 +16,20 @@ module game_fsm (
 );
     localparam IDLE=3'd0, RECORD=3'd1, REPLAY=3'd2,
                MATCH=3'd3, RESULT=3'd4;
-    reg [2:0] next_state;
-
-    always @(*) begin
-        next_state = state;
-        case (state)
-            IDLE:   if (start) next_state = RECORD;
-            RECORD: if (finish_record && sequence_nonempty) next_state = REPLAY;
-            REPLAY: if (replay_done) next_state = MATCH;
-            MATCH:  if (match_done) next_state = RESULT;
-            RESULT: if (start) next_state = RECORD;
-            default: next_state = IDLE;
-        endcase
-    end
-
+    // At each clock edge, advance only when this phase is finished.
+    // With no matching condition, the state register keeps its value.
     always @(posedge clk) begin
         if (reset) state <= IDLE;
-        else       state <= next_state;
+        else begin
+            case (state)
+                IDLE:   if (start) state <= RECORD;
+                RECORD: if (finish_record && sequence_nonempty) state <= REPLAY;
+                REPLAY: if (replay_done) state <= MATCH;
+                MATCH:  if (match_done) state <= RESULT;
+                RESULT: if (start) state <= RECORD;
+                default: state <= IDLE;
+            endcase
+        end
     end
 
     assign record_enable = (state == RECORD);
