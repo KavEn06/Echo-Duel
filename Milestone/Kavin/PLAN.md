@@ -17,3 +17,7 @@ Readability revision: combined rendering and pixel walking in `frame_writer.v`,
 using native 160x120 coordinates and named nine-bit colours. Removed the separate
 renderer file and combined its key/border checks into the writer testbench.
 The game FSM now uses one clocked case statement with the same transitions.
+
+Player layout revision: two four-key groups, ASDF and HJKL, with shared C/D/E/F
+notes. A two-bit note ID and one-bit active-player signal select the highlight.
+Added small letter labels; tests cover both groups, scene snapshots and release.

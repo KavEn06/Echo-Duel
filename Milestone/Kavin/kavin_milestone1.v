@@ -9,7 +9,8 @@ module kavin_milestone1 (
     input wire sequence_nonempty,
     input wire replay_done,
     input wire match_done,
-    input wire [2:0] note_id,
+    input wire [1:0] note_id,
+    input wire active_player,
     input wire note_active,
     output wire [2:0] game_state,
     output wire record_enable,
@@ -37,7 +38,7 @@ module kavin_milestone1 (
     );
     frame_writer painter (
         .clk(CLOCK_50), .reset(reset), .state(game_state),
-        .note_id(note_id), .note_active(note_active),
+        .note_id(note_id), .active_player(active_player), .note_active(note_active),
         .x(x), .y(y), .color(color), .write(write)
     );
     // Official ECE241 VGA adapter, downloaded from Quercus, unmodified.

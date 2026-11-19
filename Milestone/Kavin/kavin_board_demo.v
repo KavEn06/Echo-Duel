@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// VGA-only hardware bring-up: SW[2:0] selects a note, SW[3] lights it.
+// VGA-only demo: SW[1:0] = note, SW[2] = player, SW[3] = highlight.
 // KEY[0] resets. Keyboard/audio are deliberately not emulated here.
 module kavin_board_demo (
     input wire CLOCK_50,
@@ -23,7 +23,7 @@ module kavin_board_demo (
         .CLOCK_50(CLOCK_50), .reset(reset_pipe[1]),
         .start(1'b0), .finish_record(1'b0), .sequence_nonempty(1'b0),
         .replay_done(1'b0), .match_done(1'b0),
-        .note_id(sw_sync[2:0]), .note_active(sw_sync[3]),
+        .note_id(sw_sync[1:0]), .active_player(sw_sync[2]), .note_active(sw_sync[3]),
         .game_state(), .record_enable(), .replay_enable(), .match_enable(),
         .VGA_R(VGA_R), .VGA_G(VGA_G), .VGA_B(VGA_B),
         .VGA_CLK(VGA_CLK), .VGA_HS(VGA_HS), .VGA_VS(VGA_VS),

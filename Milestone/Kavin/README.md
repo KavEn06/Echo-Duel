@@ -1,7 +1,7 @@
 # Kavin - Milestone 1
 
 Four project Verilog files, plus the unchanged ECE241 VGA starter code.
-The display shows eight white keys, highlights the active note green, and
+The display shows two groups of four white keys (ASDF and HJKL), highlights the active key green, and
 uses a coloured bar to show the game phase.
 
 ## Read the code in this order
@@ -25,6 +25,42 @@ A full screen takes 19,201 clocks (about 0.384 ms at 50 MHz). Redrawing the whol
 screen is simple and erases the previous highlight. This is a single framebuffer;
 updates are not guaranteed to be tear-free relative to the monitor scan.
 
+## How the four files communicate
+
+These are hardware modules in **one Quartus project**, rather than separate
+programs. The integration top creates wires and connects module ports:
+
+```verilog
+wire [2:0] game_state;
+// FSM output drives the wire; the writer input reads the same wire.
+game_fsm controller (... .state(game_state), ...);
+frame_writer painter (... .state(game_state), ...);
+```
+
+This is an illustrative excerpt, not complete Verilog. The real connections are
+in `kavin_milestone1.v`. All project registers update using the same 50 MHz clock.
+The FSM produces the phase; the writer combines it with the note inputs and
+outputs `(x, y, color, write)` to the course adapter. The adapter stores those
+pixels and continuously sends the picture to VGA. The board demo simply supplies
+switch/reset inputs to this connected design.
+
+## Player key mapping
+
+| Note ID | Musical note | Player 1 (left) | Player 2 (right) |
+| --- | --- | --- | --- |
+| 0 | C | A | H |
+| 1 | D | S | J |
+| 2 | E | D | K |
+| 3 | F | F | L |
+
+Both players use the same pitches, allowing Player 2 to repeat Player 1's melody.
+The interface carries one sounding note at a time, matching the turn-based game.
+The keyboard decoder still needs to translate the eight physical keys into
+`active_player`, `note_id` and `note_active`; these files do not read PS/2 codes.
+During recording the final game logic should accept Player 1, during matching
+Player 2. During replay, route the stored notes to Player 1's displayed group.
+This input qualification belongs to the future keyboard/game integration.
+
 ## Test on your Mac
 
 Requires Icarus Verilog and Make. From this folder:
@@ -34,7 +70,7 @@ make          # three simulation suites, then compile both tops
 make -B test  # force all simulations to run again
 ```
 
-Tests check FSM transitions, all eight key highlights and borders, screen write
+Tests check FSM transitions, both players and all four notes, key labels/borders, screen write
 coverage, consistent updates, released-note erasure, and the course adapter's
 VGA frame and RGB output. Build files go into ignored `.build/`.
 
@@ -51,8 +87,9 @@ and switch pins come from the course's DE1-SoC COLORS example.
 
 1. Compile, inspect timing/resources and program the board.
 2. Press KEY[0] to reset.
-3. Use SW[2:0] to select C, D, E, F, G, A, B or upper C (IDs 0..7).
-4. SW[3] high highlights that note; low releases it.
+3. Use SW[1:0] to select C, D, E or F (IDs 0..3).
+4. SW[2] selects Player 1 (low) or Player 2 (high).
+5. SW[3] high highlights that note for the selected player; low releases it.
 
 This VGA-only demo stays in IDLE. It has no keyboard or sound yet. Changing
 multiple switches may briefly select an intermediate note. Clock constraints
@@ -66,7 +103,8 @@ Use `kavin_milestone1` in the final board wrapper. All inputs use `CLOCK_50`:
 | Signal | Meaning |
 | --- | --- |
 | `reset` | Active-high reset held across at least one clock edge |
-| `note_id`, `note_active` | Note ID 0..7 and high while that note is sounding |
+| `note_id[1:0]`, `note_active` | Note ID 0..3 (C, D, E, F), and high while sounding |
+| `active_player` | 0 = Player 1 (ASDF), 1 = Player 2 (HJKL) |
 | `start` | One-clock pulse: begin a round from IDLE or RESULT |
 | `finish_record` | One-clock pulse: end recording, including a future full-memory condition |
 | `sequence_nonempty` | At least one note is stored |
