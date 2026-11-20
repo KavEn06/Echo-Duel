@@ -2,28 +2,33 @@
 // Draw the screen into the course VGA adapter, one pixel per clock.
 // Coordinates are directly in the adapter's 160x120 resolution.
 module frame_writer (
+    // Scene inputs: phase, note, player, and whether a note is sounding.
     input wire clk, reset,
     input wire [2:0] state,
-    input wire [1:0] note_id,
+    input wire [1:0] note_id, // 0=C, 1=D, 2=E, 3=F
     input wire active_player, // 0 = Player 1 (ASDF), 1 = Player 2 (HJKL)
     input wire note_active,
+    // Pixel data sent to the VGA adapter; x=0..159, y=0..119.
     output reg [7:0] x,
     output reg [6:0] y,
     output reg [8:0] color,
-    output reg write
+    output reg write // High: store this pixel at the next rising clock edge.
 );
     // Each group of three bits is one colour channel: RRR_GGG_BBB.
     localparam BACKGROUND = 9'b000_000_001;
     localparam WHITE      = 9'b111_111_111;
     localparam GREEN      = 9'b001_110_011;
+    // Hold one snapshot of the scene for a complete screen drawing.
     reg [2:0] saved_state;
     reg [1:0] saved_note;
     reg saved_player;
     reg saved_active;
+    // Loop helpers describe repeated drawing logic, not extra clock cycles.
     integer player, key, left;
-    reg [14:0] letter;
+    reg [14:0] letter; // Fifteen pixels: three columns by five rows.
 
     // Tiny 3x5 labels. Each group of three bits is one row, top to bottom.
+    // A 1 lights a letter pixel; a 0 leaves the background visible.
     function [14:0] key_label;
         input integer number;
         begin
@@ -43,7 +48,9 @@ module frame_writer (
 
     // 1. Choose the colour of the pixel at (x, y).
     always @(*) begin
+        // Start with the background, then draw shapes over it.
         color = BACKGROUND;
+        // The rectangle near the top changes colour with the game phase.
         if (x >= 4 && x < 156 && y >= 6 && y < 16) begin
             case (saved_state)
                 0: color = 9'b010_011_110; // IDLE: blue
@@ -56,19 +63,25 @@ module frame_writer (
         end
         // Two groups of four keys, with a larger gap between players.
         // Both groups play C, D, E, F in left-to-right order.
+        // Defaults keep these combinational helpers fully assigned.
         left = 0;
         letter = 0;
         for (player = 0; player < 2; player = player + 1) begin
             for (key = 0; key < 4; key = key + 1) begin
+                // Second player starts 80 pixels over; keys are 16 pixels apart.
                 left = 8 + 80*player + 16*key;
+                // A key is a 14-by-30 rectangle.
                 if (x >= left && x < left+14 && y >= 70 && y < 100) begin
                     color = WHITE;
+                    // Only the selected player's selected note becomes green.
                     if (saved_active && saved_player == player && saved_note == key)
                         color = GREEN;
                 end
                 // Letter centred below this key, three pixels wide and five high.
+                // Letter numbers 0..3 are ASDF; 4..7 are HJKL.
                 letter = key_label(4*player + key);
                 if (x >= left+5 && x < left+8 && y >= 104 && y < 109) begin
+                    // Convert the letter's row/column into a bit position.
                     if (letter[14 - (3*(y-104) + x-(left+5))]) color = WHITE;
                 end
             end
@@ -78,6 +91,7 @@ module frame_writer (
     // 2. Walk left to right, then move down to the next row.
     always @(posedge clk) begin
         if (reset) begin
+            // Return to the top-left and stop writes during reset.
             x <= 0;
             y <= 0;
             write <= 0;
@@ -91,13 +105,16 @@ module frame_writer (
             saved_note <= note_id;
             saved_player <= active_player;
             saved_active <= note_active;
-            write <= 1;
+            write <= 1; // Start writing the new screen on the next clock.
         end else if (x < 159) begin
+            // Move right by one pixel.
             x <= x + 1'b1;
         end else begin
+            // End of row: return left, then advance down.
             x <= 0;
             if (y < 119) y <= y + 1'b1;
             else begin
+                // Bottom-right reached: prepare another full-screen sweep.
                 y <= 0;
                 write <= 0; // Screen complete; save fresh inputs next clock.
             end
