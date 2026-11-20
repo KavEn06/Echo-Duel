@@ -12,7 +12,11 @@ melody recording, replay and scoring are later work. The phase stays IDLE.
 
 ## Audio-only simulation (start here)
 
-In ModelSim/Questa, change directory to `game/ModelSim`, then type:
+On the DESL remote machine, double-click `game/ModelSim/audio.cmd` to select
+the installed course ModelSim 18.1 and run the test automatically. The newer
+Questa 2023 on PATH failed to start with a license error in this session.
+
+Alternatively, in ModelSim change directory to `game/ModelSim`, then type:
 
 ```tcl
 do testbench.do
