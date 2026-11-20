@@ -21,7 +21,7 @@ vlog -work work [file join $game_dir echo_duel_m1.v] \
     [file join $game_dir tests tb_full_system.v]
 # The real VGA RAM loads MIF/black_160_9.mif relative to this directory.
 cd $game_dir
-vsim -onfinish stop -voptargs=+acc -L altera_mf_ver -L lpm_ver -L cyclonev_ver work.tb_full_system
+vsim -onfinish stop -voptargs=+acc -L altera_mf_ver -L 220model_ver -L cyclonev_ver work.tb_full_system
 do [file join $script_dir full_wave.do]
 run -all
 wave zoom full

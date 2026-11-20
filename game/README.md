@@ -59,3 +59,6 @@ from that official download (Canvas file 45693739). The avconf lookup block
 has `always @(*)` added to prevent the original zero-delay `always` loop from
 hanging simulation; its lookup values and hardware behavior are unchanged. Kavin's course VGA
 source attribution is in `../Milestone 1/Kavin/COURSE_SOURCES.md`.
+
+For ModelSim 10.5 compatibility, the PS/2 mouse-initialization register is
+declared before its uses; behavior is unchanged.
