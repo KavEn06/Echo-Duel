@@ -2,6 +2,7 @@
 vlib work
 vlog ../note_decoder.v ../tests/tb_note_decoder.v
 vsim tb_note_decoder
+configure wave -signalnamewidth 1
 add wave -radix hex      /tb_note_decoder/ps2_byte
 add wave                 /tb_note_decoder/ps2_byte_en
 add wave -radix unsigned /tb_note_decoder/note_id

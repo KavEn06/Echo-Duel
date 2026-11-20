@@ -2,6 +2,7 @@
 vlib work
 vlog ../tone_gen.v ../tests/tb_tone_gen.v
 vsim tb_tone_gen
+configure wave -signalnamewidth 1
 add wave                 /tb_tone_gen/note_on
 add wave -radix unsigned /tb_tone_gen/note_id
 add wave                 /tb_tone_gen/high
