@@ -7,4 +7,4 @@ if not exist "%SIMULATOR%" (
   pause
   exit /b 1
 )
-start "" "%SIMULATOR%" -do testbench.do
+start "" "%SIMULATOR%" -do audio.do

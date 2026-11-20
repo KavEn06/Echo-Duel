@@ -11,25 +11,30 @@ The selected note plays through audio and highlights on VGA. LEDs 0..3 show
 the note, and LED 9 shows the player. This is the playable-keyboard milestone;
 melody recording, replay and scoring are later work. The phase stays IDLE.
 
-## Audio-only simulation (start here)
+## Combined ModelSim simulation
 
-On the DESL remote machine, double-click `game/ModelSim/audio.cmd` to select
-the installed course ModelSim 18.1 and run the test automatically. The newer
-Questa 2023 on PATH failed to start with a license error in this session.
+On the DESL remote PC, double-click `game/ModelSim/fullsystem.cmd`.
+Or change ModelSim's directory to `game/ModelSim` and enter `do testbench.do`.
+This follows the lab layout: `testbench.do` compiles/runs and `full_wave.do`
+sets up the waveform. `game/testbench.do` also forwards to this script.
 
-Alternatively, in ModelSim change directory to `game/ModelSim`, then type:
+The combined test presses and releases ASDF/HJKL over actual PS/2 wires.
+It checks decoded notes/players, LEDs, green/white pixel writes, tone samples,
+the real audio FIFO/serializer's DAC output and VGA horizontal sync. It uses
+real course PS/2, VGA, audio and codec configuration RTL plus Intel simulation
+libraries. The testbench supplies external keyboard signals, codec clocks and
+an idealized I2C acknowledgement; it does not simulate physical sound or a monitor.
+Game recording/replay/scoring are not implemented in this milestone.
 
-```tcl
-do testbench.do
-```
+ModelSim stays open after the tests. Results are in `full_system_transcript.log`.
+The launcher selects installed ModelSim 18.1 because newer Questa 2023 on PATH
+failed with a license error during this session.
 
-It compiles `tone_gen.v` and the audio testbench, runs automatically, displays
-C/D/E/F square waves and silence, checks the divider periods/amplitudes, and
-saves `audio_transcript.log`. Like the previous lab, `testbench.do` compiles
-and starts the simulation, then loads `wave.do` for its waveform layout. No Intel libraries are needed for this standalone
-tone test. It uses the actual 50 MHz clock. It tests digital samples, not the
-physical codec, speakers, or whether the final audio stream sounds correct.
-`game/testbench.do` forwards to the same script if you open the game folder.
+## Audio-only simulation
+
+Double-click `game/ModelSim/audio.cmd`, or run `do audio.do` from `game/ModelSim`.
+This independently checks C/D/E/F divider periods, amplitudes and release silence
+at 50 MHz, using `wave.do` for its waveform and `audio_transcript.log` for results.
 
 ## Local checks
 
@@ -50,5 +55,7 @@ Saajan's original ZIP supplies the integration top, course PS/2/audio controller
 modules and tests. Course audio controllers in the ZIP match `Audio.zip` from:
 https://q.utoronto.ca/courses/468637/pages/audio-controller
 The previously missing `course_audio/avconf.v` and `I2C_Controller.v` are copied
-unchanged from that official download (Canvas file 45693739). Kavin's course VGA
+from that official download (Canvas file 45693739). The avconf lookup block
+has `always @(*)` added to prevent the original zero-delay `always` loop from
+hanging simulation; its lookup values and hardware behavior are unchanged. Kavin's course VGA
 source attribution is in `../Milestone 1/Kavin/COURSE_SOURCES.md`.

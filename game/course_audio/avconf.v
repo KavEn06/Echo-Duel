@@ -125,7 +125,8 @@ begin
 end
 ////////////////////////////////////////////////////////////////////
 /////////////////////	Config Data LUT	  //////////////////////////	
-always
+// Combinational lookup: sensitivity prevents a zero-time simulation loop.
+always @(*)
 begin
 	LUT_DATA	<=	16'h0000;
 	case(LUT_INDEX)
