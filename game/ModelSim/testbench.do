@@ -9,7 +9,7 @@ cd $script_dir
 transcript file full_system_transcript.log
 transcript on
 if {![file exists work]} {vlib work}
-vmap work work
+vmap work [file join $script_dir work]
 # Real course controllers and Intel simulation libraries; no course_stubs.v.
 vlog -work work [file join $game_dir echo_duel_m1.v] \
     [file join $saajan_dir note_decoder.v] [file join $saajan_dir tone_gen.v] \
@@ -21,6 +21,7 @@ vlog -work work [file join $game_dir echo_duel_m1.v] \
     [file join $game_dir tests tb_full_system.v]
 # The real VGA RAM loads MIF/black_160_9.mif relative to this directory.
 cd $game_dir
+vmap work [file join $script_dir work]
 vsim -onfinish stop -voptargs=+acc -L altera_mf_ver -L 220model_ver -L cyclonev_ver work.tb_full_system
 do [file join $script_dir full_wave.do]
 run -all
