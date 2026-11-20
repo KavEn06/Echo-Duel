@@ -1,6 +1,7 @@
 # Combined Echo Duel milestone 1
 
-Open `echo_duel_m1.qpf` in Quartus. This connects Saajan's keyboard/note/audio
+Open `echo_duel_m1.qpf` in Quartus, or run `compile.cmd` on the remote PC
+for a complete hardware build. Read `compile.log` and the reports in `output_files`. This connects Saajan's keyboard/note/audio
 modules to Kavin's existing VGA interface without renaming its ports.
 The two teammates' source modules remain in `Milestone 1/Kavin` and `Milestone 1/Saajan`.
 The top and real course keyboard/audio support modules live here.
