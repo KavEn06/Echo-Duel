@@ -20,7 +20,8 @@ do testbench.do
 
 It compiles `tone_gen.v` and the audio testbench, runs automatically, displays
 C/D/E/F square waves and silence, checks the divider periods/amplitudes, and
-saves `audio_transcript.log`. No Intel libraries are needed for this standalone
+saves `audio_transcript.log`. Like the previous lab, `testbench.do` compiles
+and starts the simulation, then loads `wave.do` for its waveform layout. No Intel libraries are needed for this standalone
 tone test. It uses the actual 50 MHz clock. It tests digital samples, not the
 physical codec, speakers, or whether the final audio stream sounds correct.
 `game/testbench.do` forwards to the same script if you open the game folder.
