@@ -1,6 +1,6 @@
 # Open ModelSim, then: do testbench.do
-# This script finds its sources relative to itself, independent of the current folder.
-set script_dir [file dirname [file normalize [info script]]]
+# Run from game/ModelSim, matching the previous lab workflow.
+set script_dir [pwd]
 set game_dir [file dirname $script_dir]
 set repo_dir [file dirname $game_dir]
 set saajan_dir [file join $repo_dir {Milestone 1} Saajan]
