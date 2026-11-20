@@ -3,29 +3,23 @@
 `tb_full_system` is the testbench. `dut` is the actual Echo Duel board top.
 Names such as `dut/kavin/x` mean the `x` wire inside Kavin's module inside the top.
 
-| Signal | Meaning |
+| Displayed wave | Meaning |
 |---|---|
-| PS2_CLK | Clock pulses supplied by the simulated keyboard. |
-| PS2_DAT | Keyboard bits, sent one at a time. |
-| ps2_byte | Received scan code, displayed in hexadecimal. |
-| ps2_byte_en | One-clock pulse indicating a new scan code. |
-| note_id | Pitch: 0=C, 1=D, 2=E, 3=F. |
-| player | 0=Player 1 (ASDF), 1=Player 2 (HJKL). |
-| note_on | 1 while a recognized note key is held. |
-| LEDR | Bits 0..3 identify the note; bit 9 identifies the player. |
-| sample | Audio square wave: +10,000,000 / -10,000,000; zero is silence. |
-| audio_out_allowed | Audio controller has room for another sample. |
-| AUD_DACDAT | Serial audio bits sent to the external audio chip. |
-| x | Horizontal coordinate of the pixel being written, 0..159. |
-| y | Vertical coordinate of that pixel, 0..119. |
-| color | Pixel colour in 9-bit RRR GGG BBB format. |
-| write | 1 means write x/y/color into VGA memory on the next clock edge. |
-| VGA_HS | Horizontal sync timing for each monitor row. |
-| VGA_VS | Vertical sync timing for each monitor frame. |
-| VGA_R | Red level currently sent to the monitor. |
-| VGA_G | Green level currently sent to the monitor. |
-| VGA_B | Blue level currently sent to the monitor. |
+| key | Actual decoded key: A, S, D, F, H, J, K, L, or released. Derived from the captured LED bus. |
+| note | LEDR[3:0]: 0001=C, 0010=D, 0100=E, 1000=F; 0000=off. |
+| player | LEDR[9]: P1 (ASDF) or P2 (HJKL). |
+| held | 1 while a recognized note key is held. |
+| audio_sample | Audio square wave: +10,000,000 / -10,000,000; zero is silence. |
+| audio_ready | Audio controller has room for another sample. |
+| audio_serial | Serial audio bits sent to the external audio chip. |
 | errors | Failed checks so far; must be 0 after ALL FULL SYSTEM TESTS PASSED. |
+
+The key waveform uses cyan for Player 1, yellow for Player 2, and gray for
+released. It labels actual decoder output, rather than the testbench's intended
+key. Player remains selected when a key is released, while note returns to 0000.
+The test runs A -> S -> D -> F -> H -> J -> K -> L, with releases between keys.
+VGA signals and raw PS/2 bits are hidden from this presentation view; the same
+full-system simulation and checks still run.
 
 ## Key codes
 
