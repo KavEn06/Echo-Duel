@@ -26,7 +26,9 @@ libraries. The testbench supplies external keyboard signals, codec clocks and
 an idealized I2C acknowledgement; it does not simulate physical sound or a monitor.
 Game recording/replay/scoring are not implemented in this milestone.
 
-ModelSim stays open after the tests. Results are in `full_system_transcript.log`.
+The full run can take several minutes with the Intel peripheral models.
+ModelSim stays open after the tests. Double-click `results.cmd` to reopen the
+saved waveform later without rerunning; keep `game/vsim.wlf` on the remote PC. Results are in `full_system_transcript.log`.
 The launcher selects installed ModelSim 18.1 because newer Questa 2023 on PATH
 failed with a license error during this session.
 

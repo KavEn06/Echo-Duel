@@ -17,3 +17,4 @@ add wave -radix hexadecimal sim:/tb_full_system/VGA_R sim:/tb_full_system/VGA_G 
 add wave -divider {Checks: 0 means every check passed}
 add wave -radix unsigned sim:/tb_full_system/errors
 configure wave -timelineunits ms
+configure wave -signalnamewidth 1

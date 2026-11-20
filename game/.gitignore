@@ -7,3 +7,5 @@ incremental_db/
 output_files/
 *.qws
 compile.log
+modelsim.ini
+*_transcript.log
