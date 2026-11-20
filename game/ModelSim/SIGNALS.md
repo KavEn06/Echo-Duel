@@ -12,13 +12,14 @@ Names such as `dut/kavin/x` mean the `x` wire inside Kavin's module inside the t
 | audio_sample | Audio square wave: +10,000,000 / -10,000,000; zero is silence. |
 | audio_ready | Audio controller has room for another sample. |
 | audio_serial | Serial audio bits sent to the external audio chip. |
+| color | VGA painter's 9-bit pixel colour, shown in hexadecimal (RRR GGG BBB). |
 | errors | Failed checks so far; must be 0 after ALL FULL SYSTEM TESTS PASSED. |
 
 The key waveform uses cyan for Player 1, yellow for Player 2, and gray for
 released. It labels actual decoder output, rather than the testbench's intended
 key. Player remains selected when a key is released, while note returns to 0000.
 The test runs A -> S -> D -> F -> H -> J -> K -> L, with releases between keys.
-VGA signals and raw PS/2 bits are hidden from this presentation view; the same
+Other VGA signals and raw PS/2 bits are hidden from this presentation view; the same
 full-system simulation and checks still run.
 
 ## Key codes

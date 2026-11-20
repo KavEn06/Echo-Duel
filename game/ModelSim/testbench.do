@@ -1,5 +1,8 @@
 # Run from game/ModelSim, like the previous labs: do testbench.do
 set script_dir [pwd]
+if {[file exists [file join $script_dir ModelSim testbench.do]]} {
+    set script_dir [file join $script_dir ModelSim]
+}
 set game_dir [file dirname $script_dir]
 set repo_dir [file dirname $game_dir]
 set kavin_dir [file join $repo_dir {Milestone 1} Kavin]
@@ -26,7 +29,6 @@ vsim -onfinish stop -voptargs=+acc -L altera_mf_ver -L 220model_ver -L cyclonev_
 do [file join $script_dir full_wave.do]
 run -all
 wave zoom full
-cd $script_dir
 if {[examine -radix decimal sim:/tb_full_system/errors] != 0} {
     error {FAIL: combined system checks failed; see transcript}
 }

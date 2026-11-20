@@ -1,5 +1,9 @@
 # Run from game/ModelSim AFTER the test completes: do desktop.do
-set repo_dir [file normalize ../..]
+if {[file exists echo_duel_m1.v]} {
+    set repo_dir [file normalize ..]
+} else {
+    set repo_dir [file normalize ../..]
+}
 set mover [file join $repo_dir game ModelSim desktop.ps1]
 # Close the active dataset, keeping the ModelSim application open.
 catch {quit -sim}

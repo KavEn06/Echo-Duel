@@ -31,6 +31,8 @@ add wave -divider {Audio}
 add wave -label audio_sample -radix decimal -format analog-step -height 140 -min -11000000 -max 11000000 sim:/tb_full_system/dut/sample
 add wave -label audio_ready sim:/tb_full_system/dut/audio_out_allowed
 add wave -label audio_serial sim:/tb_full_system/AUD_DACDAT
+add wave -divider {VGA pixel colour: 9-bit RRR GGG BBB}
+add wave -label color -radix hexadecimal sim:/tb_full_system/dut/kavin/color
 add wave -divider {Test result: errors should finish at zero}
 add wave -label errors -radix unsigned sim:/tb_full_system/errors
 configure wave -timelineunits ms
