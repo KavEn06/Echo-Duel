@@ -1,0 +1,7 @@
+work/
+audio_work/
+*.log
+*.wlf
+modelsim.ini
+transcript
+MIF/

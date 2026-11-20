@@ -4,7 +4,7 @@ Two-player FPGA melody memory game for ECE241 on the DE1-SoC.
 
 ## Project folders
 
-- [Game](game/README.md): complete game implementation and integration.
+- [Game](game/README.md): combined keyboard/audio/VGA milestone and audio simulation.
 - [Saajan: Milestone 1 keyboard and audio](Milestone%201/Saajan/README.md)
 
 ## Milestone 1
